@@ -1,8 +1,8 @@
 {
-	"name": "purity-dashboard-react",
-	"version": "2.0.2",
+	"name": "phoenix-admin-panel",
+	"version": "0.0.1",
 	"private": true,
-	"homepage": "https://demos.creative-tim.com/purity-ui-dashboard/#/",
+	"homepage": ".",
 	"dependencies": {
 		"@chakra-ui/icons": "^1.1.5",
 		"@chakra-ui/react": "1.8.8",

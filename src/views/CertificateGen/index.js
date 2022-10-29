@@ -1,8 +1,19 @@
+import { useState,useEffect } from "react";
 import { Button, Container, Flex, Textarea } from "@chakra-ui/react";
 import CsvUploader from "components/Uploads/CsvUploader";
 import PdfUploader from "components/Uploads/PdfUploader";
 
 const CertificateGen = () => {
+  const [apiReqBody,setApiReqBody]= useState(
+    {
+      pdf: '',
+      csv: ''
+    }
+  )
+
+  useEffect(()=>{
+    console.log(apiReqBody)
+  },[apiReqBody])
   return (
     <Flex
       flexDirection="column"
@@ -21,8 +32,8 @@ const CertificateGen = () => {
       </Container>
       <Container w="50%" h="70vh" p={0}>
         <Flex h="100%" flexDirection="column">
-         <PdfUploader/>
-         <CsvUploader/>
+         <PdfUploader File={apiReqBody} setFile={setApiReqBody}/>
+         <CsvUploader File={apiReqBody} setFile={setApiReqBody}/>
         </Flex>
       </Container>
     </Flex>

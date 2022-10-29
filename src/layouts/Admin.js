@@ -101,6 +101,7 @@ export default function Dashboard(props) {
 				}}>
 				<Portal>
 					<AdminNavbar
+					    
 						onOpen={onOpen}
 						logoText={'PURITY UI DASHBOARD'}
 						brandText={getActiveRoute(routes)}

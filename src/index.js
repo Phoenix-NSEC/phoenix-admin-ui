@@ -9,7 +9,7 @@ import RTLLayout from "layouts/RTL.js";
 import MembershipForm from "views/MembershipForm";
 
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouter>
     <Switch>
       <Route path={`/auth`} component={AuthLayout} />
       <Route path={`/admin`} component={AdminLayout} />
@@ -17,6 +17,6 @@ ReactDOM.render(
       <Route path={'/member-registration'} component={MembershipForm}/>
       <Redirect from={`/`} to="/admin/dashboard" />
     </Switch>
-  </BrowserRouter>,
+  </HashRouter>,
   document.getElementById("root")
 );

@@ -49,8 +49,8 @@ function TablesTableRow(props) {
       </Td>
       <Td>
         <Badge
-          bg={status === "Online" ? "green.400" : bgStatus}
-          color={status === "Online" ? "white" : colorStatus}
+          bg={status === "Verified" ? "green.400" : bgStatus}
+          color={status === "Verified" ? "white" : colorStatus}
           fontSize="16px"
           p="3px 10px"
           borderRadius="8px"

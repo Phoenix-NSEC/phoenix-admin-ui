@@ -1,7 +1,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./index.css"
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";

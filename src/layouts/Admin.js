@@ -98,9 +98,11 @@ export default function Dashboard(props) {
 				w={{
 					base: '100%',
 					xl: 'calc(100% - 275px)'
-				}}>
+				}}
+				
+				>
 				<Portal>
-					<AdminNavbar
+					{/* <AdminNavbar
 					    
 						onOpen={onOpen}
 						logoText={'PURITY UI DASHBOARD'}
@@ -108,7 +110,7 @@ export default function Dashboard(props) {
 						secondary={getActiveNavbar(routes)}
 						fixed={fixed}
 						{...rest}
-					/>
+					/> */}
 				</Portal>
 				{getRoute() ? (
 					<PanelContent>
@@ -121,9 +123,9 @@ export default function Dashboard(props) {
 					</PanelContent>
 				) : null}
 				{/* <Footer /> */}
-				<Portal>
+				{/* <Portal>
 					<FixedPlugin secondary={getActiveNavbar(routes)} fixed={fixed} onOpen={onOpen} />
-				</Portal>
+				</Portal> */}
 				<Configurator
 					secondary={getActiveNavbar(routes)}
 					isOpen={isOpen}

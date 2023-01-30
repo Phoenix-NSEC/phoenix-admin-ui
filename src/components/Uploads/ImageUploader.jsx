@@ -1,7 +1,7 @@
 import { Flex, Container,Text, Button } from "@chakra-ui/react";
 import { useState, useEffect,useRef } from "react";
 
-function ImageUploader({File,setFile,height}) {
+function ImageUploader({File,setFile,activeInput,setActiveInput,setData,data}) {
   const fileRef = useRef()
   const [namePos,setNamePos] = useState({x:0,y:0})
 
@@ -10,7 +10,7 @@ function ImageUploader({File,setFile,height}) {
   }
   const handleDragOver = (event) => {
     event.preventDefault();
-    console.log("enter");
+  
   };
 
   const handleDrop = (event) => {
@@ -31,110 +31,89 @@ function ImageUploader({File,setFile,height}) {
     return fname;
   }
 
+ 
   
-  
+  function drag(event) {
+   if(activeInput.certname)
+   {
+    setData({
+      ...data,
+        name:{
+          ...data.name,
+          x: event.offsetX ,
+          y: event.offsetY+80
+        }
+      })
+   }
+   
 
-  let rect = {
-    x: 0,
-    y: 0,
-    width: 300,
-    height: 20
-  };
+if(activeInput.certid) 
+{
+  setData({
+    ...data,
+      id:{
+        ...data.id,
+        x: event.offsetX ,
+        y: event.offsetY+135 
+      }
+    })
+     }
+}
+
+function stopDrag(){
+  setActiveInput({
+    certname:false,
+    certid:false
+  })
+}
+
+console.log(activeInput)
   useEffect(() => {
+   
     var canvas = document.getElementById("cert");
     var ctx = canvas.getContext("2d");
-    canvas.addEventListener("mousedown", startDrag)
-    canvas.addEventListener("mousemove", drag);
-    canvas.addEventListener("click", endDrag)
-    
-    let isDragging = true;
-  function startDrag(event) {
-    //  alert("startDrag")
-      var mouseX = event.offsetX 
-      var mouseY = event.offsetX
-      rect.x = mouseX;
-      rect.y = mouseY;
-
-      // Clear the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Redraw the rect
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height)
-      // Check if the mouse is inside the rect
-      // if (mouseX >= rect.x && mouseX <= rect.x + rect.width && mouseY >= rect.y && mouseY <= rect.y + rect.height) {
-        // alert("clicked")
-        isDragging = true;
-      // }
-    }
-  
-    function drag(event) {
-      if (isDragging) {
-        setNamePos({
-          x: event.offsetX ,
-          y: event.offsetY 
-        })
-        var mouseX = event.offsetX ;
-        var mouseY = event.offsetY ;
-  
-        // Update the rect's x and y coordinates
-        rect.x = mouseX;
-        rect.y = mouseY;
-  
-        // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-        // Redraw the rect
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height)
-      }
-    }
-  
-    function endDrag() {
-      console.log("endDrag")
-      isDragging = false;
-    }
-    // Event listeners for mouse events
-
-  
-    // Draw the rect on the canvas
     var img = new Image();
     const reader = new FileReader();
     File.img && reader.readAsDataURL(File?.img)
     reader.addEventListener('load', function(e) {
       img.src = reader.result;
     });
+    File?.img && canvas.addEventListener("mousemove", drag);
+    canvas.addEventListener("mousedown",stopDrag)
+ 
+  
+  
+
+    
     img.onload = function() {
       
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-        // Add text to the image
-        ctx.font = "40px poppins";
-        ctx.fillStyle = "#CBA04F";
-        ctx.fillText("Kallyan Singha", 263, 259);
-        ctx.font = "15px poppins";
-        ctx.fillStyle = "#CBA04F";
-        ctx.fillText("CERT67PH02", 113, 480);
+        ctx.font = `${data.name.fontsize}px ${data.name.font}`;
+        ctx.fillStyle = data.name.color;
+        ctx.fillText("Yout Name Here", data.name.x, data.name.y);
+        ctx.font = `${data.id.fontsize}px ${data.id.font}`;
+        ctx.fillStyle = data.id.color;
+         ctx.fillText("CERT67PH02", data.id.x, data.id.y);
     }
 
     
     return()=>{
-      canvas.removeEventListener("mousedown", startDrag);
       canvas.removeEventListener("mousemove", drag);
-      canvas.removeEventListener("mouseout", endDrag)
+      canvas.removeEventListener("mousedown",stopDrag)
     }
-  }, [File,namePos])
+  }, [File,activeInput,data])
   return (
     <div className="h-[100%] bg-[#71717129] w-[100%]  border-slate-500 border-[.0005rem] rounded-2xl p-5"
     onDragOver={handleDragOver}
       onDrop={handleDrop}
       onDragLeave={handleDragLeave}
     >
-  x: {namePos.x} , y: {namePos.y}
+
       
       <Flex  alignItems='center' justifyContent='center'  h='100%'>
         {!File.img ? (
           <Flex flexDirection='column' justifyContent='space-evenly' w="100%" h='100%' textAlign='center'>
-            <canvas height={300} width={600} id="cert" className="bg-gray-200/10"/>
+            <canvas height="500px" width="800px" id="cert" className="bg-gray-200/10"/>
             <Text> Drag and Drop .png File Here</Text>
             <span>OR</span>
             <input type="file" ref={fileRef} onChange={()=>handleSelectFile(fileRef)} hidden/>
@@ -142,9 +121,10 @@ function ImageUploader({File,setFile,height}) {
           </Flex>
         ) : (
           <Flex flexDirection='column' justifyContent='space-evenly' w="100%" h='100%' textAlign='center'>
-              <canvas height={500} width={800} id="cert" className="bg-green-500 cursor-text"/>
+              <canvas height="500px" width="800px" id="cert" className="bg-green-500 cursor-pointer"/>
             <Text> {formatString(File?.img?.name)}</Text>
             <Button w='50%' marginX='auto' colorScheme='red' onClick={()=>setFile({...File,img:''})}>Delete File</Button>
+            <Button w='50%' marginX='auto' colorScheme='blue' onClick={()=>setFile({...File,img:''})}>Upload File</Button>
             </Flex>
         )}
       </Flex>

@@ -8,10 +8,32 @@ const CertificateGen = () => {
   const [apiReqBody,setApiReqBody]= useState(
     {
       pdf: '',
-      csv: ''
-    }
-  )
+      csv: '',
+      img: '',
+    })
 
+    const [certCord,setCertCord] = useState({
+        name:{
+          x:0,
+          y:0,
+          font: 'arial',
+          fontsize: 40,
+          color: ''
+        },
+        id:{
+          x:0,
+          y:0,
+          font: 'arial',
+          fontsize: 15,
+          color: ''
+        }
+      })
+const [activeInputElementPos,setActiveInputElementPos] = useState({
+  certname: false,
+  certid: false
+})
+
+console.log(activeInputElementPos)
   useEffect(()=>{
     console.log(apiReqBody)
   },[apiReqBody])
@@ -28,24 +50,33 @@ const CertificateGen = () => {
   <FormLabel htmlFor='email-alerts' mb='0'>
     Particepent Name
   </FormLabel>
-  <Switch id='email-alerts' colorScheme='green' />
+  <span onClick={()=>setActiveInputElementPos({certid:false,certname:true})}><Switch id='certname' isChecked={activeInputElementPos.certname} colorScheme='green' /></span> 
+  
   </div>
-  X: 0 , Y: 0
+  <div className="flex flex-col">
+  X: {certCord.name.x} , Y: {certCord.name.y}
+  <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.name.font} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,font:e.target.value}})} placeholder="Font" />
+  <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.name.fontsize} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,fontsize:e.target.value}})} placeholder="Fontsize"/>
+  <input type="color" value={certCord.name.color} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,color:e.target.value}})} />
+  </div>
   <div className="flex mt-5 mb-2">
   <FormLabel htmlFor='email-alerts' mb='0'>
     Certificate Id
   </FormLabel>
-  <Switch id='email-alerts'  colorScheme='green'/>
+  <span onClick={()=>setActiveInputElementPos({certid:true,certname:false})}> <Switch id='email-alerts' isChecked={activeInputElementPos.certid} colorScheme='green'/></span>
   </div>
-  X: 0 , Y: 0
+  X: {certCord.id.x} , Y: {certCord.id.y}
+  <div className="flex flex-col">
+  <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.id.font} onChange={(e)=>setCertCord({...certCord,id:{...certCord.id,font:e.target.value}})} placeholder="Font" />
+  <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.id.fontsize} onChange={(e)=>setCertCord({...certCord,id:{...certCord.id,fontsize:e.target.value}})} placeholder="Fontsize"/>
+  <input type="color" value={certCord.id.color} onChange={(e)=>setCertCord({...certCord,id:{...certCord.id,color:e.target.value}})} />
+  </div>
 </FormControl>
   </div>
   <div className="w-[40%] h-[100%] ">
-    <ImageUploader height='100%' File={apiReqBody} setFile={setApiReqBody}/>
+    <ImageUploader height='100%' File={apiReqBody} setFile={setApiReqBody} activeInput = {activeInputElementPos} setActiveInput={setActiveInputElementPos} data={certCord} setData={setCertCord}/>
   </div>
   </div>
-       
-      <Button w='20%' mt='20px' mx="25px">Upload File</Button>
 </div>
   );
 };

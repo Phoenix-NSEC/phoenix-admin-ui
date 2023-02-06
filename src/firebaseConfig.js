@@ -25,10 +25,5 @@ const mainFirebaseConfig = {
     appId: "1:974004018957:web:c0ee9fa84238ecc03b5a44",
     measurementId: "G-XGRM7GLEXT"
 };
-const app = initializeApp(mainFirebaseConfig, "main");
-const cert = initializeApp(certFirebaseConfig, "cert");
-
-module.exports = {
-    cert: cert,
-    app: app
-}
+export const app = initializeApp(mainFirebaseConfig);
+export const cert = initializeApp(certFirebaseConfig, "cert");

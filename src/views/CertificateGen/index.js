@@ -14,18 +14,18 @@ const CertificateGen = () => {
 
     const [certCord,setCertCord] = useState({
         name:{
-          x:0,
-          y:0,
-          font: 'arial',
-          fontsize: 40,
-          color: ''
+          xAxis:0,
+          yAxis:0,
+          fontName: 'arial',
+          fontSize: 40,
+          fontColor: ''
         },
-        id:{
-          x:0,
-          y:0,
-          font: 'arial',
-          fontsize: 15,
-          color: ''
+        cId:{
+          xAxis:0,
+          yAxis:0,
+          fontName: 'arial',
+          fontSize: 15,
+          fontColor: ''
         }
       })
 const [activeInputElementPos,setActiveInputElementPos] = useState({
@@ -54,10 +54,10 @@ console.log(activeInputElementPos)
   
   </div>
   <div className="flex flex-col">
-  X: {certCord.name.x} , Y: {certCord.name.y}
-  <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.name.font} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,font:e.target.value}})} placeholder="Font" />
-  <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.name.fontsize} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,fontsize:e.target.value}})} placeholder="Fontsize"/>
-  <input type="color" value={certCord.name.color} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,color:e.target.value}})} />
+  X: {certCord.name.xAxis} , Y: {certCord.name.yAxis}
+  <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.name.fontName} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,fontName:e.target.value}})} placeholder="Font" />
+  <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.name.fontSize} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,fontSize:e.target.value}})} placeholder="Fontsize"/>
+  <input type="color" value={certCord.name.fontColor} onChange={(e)=>setCertCord({...certCord,name:{...certCord.name,fontColor:e.target.value}})} />
   </div>
   <div className="flex mt-5 mb-2">
   <FormLabel htmlFor='email-alerts' mb='0'>
@@ -65,11 +65,11 @@ console.log(activeInputElementPos)
   </FormLabel>
   <span onClick={()=>setActiveInputElementPos({certid:true,certname:false})}> <Switch id='email-alerts' isChecked={activeInputElementPos.certid} colorScheme='green'/></span>
   </div>
-  X: {certCord.id.x} , Y: {certCord.id.y}
+  X: {certCord.cId.xAxis} , Y: {certCord.cId.yAxis}
   <div className="flex flex-col">
-  <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.id.font} onChange={(e)=>setCertCord({...certCord,id:{...certCord.id,font:e.target.value}})} placeholder="Font" />
-  <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.id.fontsize} onChange={(e)=>setCertCord({...certCord,id:{...certCord.id,fontsize:e.target.value}})} placeholder="Fontsize"/>
-  <input type="color" value={certCord.id.color} onChange={(e)=>setCertCord({...certCord,id:{...certCord.id,color:e.target.value}})} />
+  <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.cId.fontName} onChange={(e)=>setCertCord({...certCord,cId:{...certCord.cId,fontName:e.target.value}})} placeholder="Font" />
+  <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.cId.fontSize} onChange={(e)=>setCertCord({...certCord,cId:{...certCord.cId,fontSize:e.target.value}})} placeholder="Fontsize"/>
+  <input type="color" value={certCord.cId.fontColor} onChange={(e)=>setCertCord({...certCord,cId:{...certCord.cId,fontColor:e.target.value}})} />
   </div>
 </FormControl>
   </div>

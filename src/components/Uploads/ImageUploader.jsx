@@ -1,9 +1,10 @@
 import { Flex, Container,Text, Button } from "@chakra-ui/react";
 import { useState, useEffect,useRef } from "react";
+import { uploadCertficateAdmin } from "utils/firebaseFxns/certificates";
+
 
 function ImageUploader({File,setFile,activeInput,setActiveInput,setData,data}) {
   const fileRef = useRef()
-  const [namePos,setNamePos] = useState({x:0,y:0})
 
   const handleSelectFile=(input)=>{
     setFile({...File,img:input.current.files[0]})
@@ -40,8 +41,8 @@ function ImageUploader({File,setFile,activeInput,setActiveInput,setData,data}) {
       ...data,
         name:{
           ...data.name,
-          x: event.offsetX ,
-          y: event.offsetY+80
+          xAxis: event.offsetX ,
+          yAxis: event.offsetY+80
         }
       })
    }
@@ -51,10 +52,10 @@ if(activeInput.certid)
 {
   setData({
     ...data,
-      id:{
-        ...data.id,
-        x: event.offsetX ,
-        y: event.offsetY+135 
+      cId:{
+        ...data.cId,
+        xAxis: event.offsetX ,
+        yAxis: event.offsetY+135 
       }
     })
      }
@@ -88,12 +89,12 @@ console.log(activeInput)
     img.onload = function() {
       
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        ctx.font = `${data.name.fontsize}px ${data.name.font}`;
-        ctx.fillStyle = data.name.color;
-        ctx.fillText("Yout Name Here", data.name.x, data.name.y);
-        ctx.font = `${data.id.fontsize}px ${data.id.font}`;
-        ctx.fillStyle = data.id.color;
-         ctx.fillText("CERT67PH02", data.id.x, data.id.y);
+        ctx.font = `${data.name.fontSize}px ${data.name.fontName}`;
+        ctx.fillStyle = data.name.fontColor;
+        ctx.fillText("Yout Name Here", data.name.xAxis, data.name.yAxis);
+        ctx.font = `${data.cId.fontSize}px ${data.cId.fontName}`;
+        ctx.fillStyle = data.cId.fontColor;
+         ctx.fillText("CERT67PH02", data.cId.xAxis, data.cId.yAxis);
     }
 
     
@@ -102,6 +103,26 @@ console.log(activeInput)
       canvas.removeEventListener("mousedown",stopDrag)
     }
   }, [File,activeInput,data])
+
+const users =[
+  {
+    name: "kallyan singha",
+    email: "kallyan@apiffer.in"
+  },
+  {
+    name: "shreyam maity",
+    email: "shreyam@apiffer.in"
+  }
+]
+
+const submitCert =()=>{
+  console.log("Success Submit")
+  console.log(File.img)
+  uploadCertficateAdmin(File.img,data.name,data.cId,'CodeRush','12-01-2023','admin',users,)
+}
+
+
+
   return (
     <div className="h-[100%] bg-[#71717129] w-[100%]  border-slate-500 border-[.0005rem] rounded-2xl p-5"
     onDragOver={handleDragOver}
@@ -124,7 +145,7 @@ console.log(activeInput)
               <canvas height="500px" width="800px" id="cert" className="bg-green-500 cursor-pointer"/>
             <Text> {formatString(File?.img?.name)}</Text>
             <Button w='50%' marginX='auto' colorScheme='red' onClick={()=>setFile({...File,img:''})}>Delete File</Button>
-            <Button w='50%' marginX='auto' colorScheme='blue' onClick={()=>setFile({...File,img:''})}>Save File</Button>
+            <Button w='50%' marginX='auto' colorScheme='blue' onClick={submitCert}>Save File</Button>
             </Flex>
         )}
       </Flex>

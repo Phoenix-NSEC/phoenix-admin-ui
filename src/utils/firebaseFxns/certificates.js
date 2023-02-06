@@ -1,27 +1,30 @@
-const { default: CsvUploader } = require("components/Uploads/CsvUploader");
-const { default: ImageUploader } = require("components/Uploads/ImageUploader");
-
-import { getStorage, ref } from "firebase/storage";
-import { getFirestore,Timestamp,doc, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getFirestore, Timestamp, doc, setDoc } from "firebase/firestore";
 import { ulid } from 'ulid'
-import { cert } from "./firebase";
+import { cert } from "firebaseConfig";
 
 
 const db = getFirestore(cert);
 
-String ImageUploader= async(file) =>{
-const storage = getStorage();
-const fileName = ulid();
-const storageRef = ref(storage, 'templates/' + fileName);
+const ImageUploader = async(file) => {
+    console.log("inside imgUp")
+    const storage = getStorage(cert, "gs://certificates-phoenix.appspot.com");
+    const fileName = ulid();
+    const storageRef = ref(storage, 'templates/' + fileName + ".png");
 
-// upload file to firestore
-uploadBytes(storageRef, file).then((snapshot) => {
-    console.log('Uploaded a blob or file!');
-    return snapshot.ref.getDownloadURL();
-});
+    // upload file to firestore
+    await uploadBytes(storageRef, file, { contentType: "image/png" }).then((snapshot) => {
+        console.log(snapshot)
+        console.log('Uploaded a blob or file!');
+        getDownloadURL(storageRef)
+            .then((url) => {
+                console.log(url)
+                return url
+            })
+    });
 }
 
-CsvUploader = async(lists , metaId,eventName, eventDate) =>{
+const CsvUploader = async(lists, metaId, eventName, eventDate) => {
     // upload file to firestore
     for (let i = 0; i < lists.length; i++) {
         const participantId = ulid();
@@ -32,21 +35,21 @@ CsvUploader = async(lists , metaId,eventName, eventDate) =>{
             createdAt: Timestamp.fromDate(new Date()),
             email: lists[i].email,
             name: lists[i].name,
-            updatedAt : Timestamp.fromDate(new Date()),
-            id : participantId,
+            updatedAt: Timestamp.fromDate(new Date()),
+            id: participantId,
             events: [metaId],
-            cIds:[
+            cIds: [
                 cId
             ]
-          },{ capital: true }, { merge: true });
-        await setDoc(cIdRef,{
+        }, { capital: true }, { merge: true });
+        await setDoc(cIdRef, {
             createdAt: Timestamp.fromDate(new Date()),
-            id : cId,
+            id: cId,
             user: lists[i].name,
             email: lists[i].email,
-            eventId : metaId,
+            eventId: metaId,
             event: eventName,
-            eventDate : eventDate,
+            eventDate: eventDate,
         }, { capital: true }, { merge: true });
     }
 
@@ -54,25 +57,24 @@ CsvUploader = async(lists , metaId,eventName, eventDate) =>{
 }
 
 
-bool uploadCertficateAdmin(file,name, id, eventName,eventDate,createdBy,lists){
+export async function uploadCertficateAdmin(file, name, id, eventName, eventDate, createdBy, lists) {
     const eId = ulid();
     const metaRef = doc(db, 'certMetas', eId);
-    var fileUrl = ImageUploader(file);
+    var fileUrl = await ImageUploader(file);
     await setDoc(metaRef, {
         createdAt: Timestamp.fromDate(new Date()),
-        eId : eId,
-        cId : id,
-        name : name,
-        eventDate : eventDate,
-        eventName : eventName,
-        createdBy: createdBy,
-        cert_url : fileUrl,
+        eId: eId,
+        cId: id,
+        name: name,
+        eventDate: eventDate,
+        eventName: eventName,
+        createdBy: createdBy || 'admin420',
+        cert_url: fileUrl,
     }, { capital: true }, { merge: true });
 
-    CsvUploader(lists,eId,eventName,eventDate);
+    CsvUploader(lists, eId, eventName, eventDate);
     return true;
 }
 
 
-module.exports = uploadCertficateAdmin;
-
+// module.exports = uploadCertficateAdmin;

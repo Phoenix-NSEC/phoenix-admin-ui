@@ -124,7 +124,7 @@ console.log(activeInput)
               <canvas height="500px" width="800px" id="cert" className="bg-green-500 cursor-pointer"/>
             <Text> {formatString(File?.img?.name)}</Text>
             <Button w='50%' marginX='auto' colorScheme='red' onClick={()=>setFile({...File,img:''})}>Delete File</Button>
-            <Button w='50%' marginX='auto' colorScheme='blue' onClick={()=>setFile({...File,img:''})}>Upload File</Button>
+            <Button w='50%' marginX='auto' colorScheme='blue' onClick={()=>setFile({...File,img:''})}>Save File</Button>
             </Flex>
         )}
       </Flex>

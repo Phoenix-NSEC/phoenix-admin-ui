@@ -3,7 +3,7 @@ import { useState, useEffect,useRef } from "react";
 import { uploadCertficateAdmin } from "utils/firebaseFxns/certificates";
 
 
-function ImageUploader({File,setFile,activeInput,setActiveInput,setData,data}) {
+function ImageUploader({File,setFile,activeInput,setActiveInput,setData,data,eventdetails}) {
   const fileRef = useRef()
 
   const handleSelectFile=(input)=>{
@@ -114,11 +114,10 @@ const users =[
     email: "shreyam@apiffer.in"
   }
 ]
+console.log(eventdetails.listParticipants)
 
 const submitCert =()=>{
-  console.log("Success Submit")
-  console.log(File.img)
-  uploadCertficateAdmin(File.img,data.name,data.cId,'CodeRush','12-01-2023','admin',users,)
+  uploadCertficateAdmin(File.img,data.name,data.cId,eventdetails.name,eventdetails.date,'admin',eventdetails.listParticipants)
 }
 
 

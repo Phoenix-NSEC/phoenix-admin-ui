@@ -15,11 +15,55 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import signInImage from "assets/img/signInImage.png";
+import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { auth, provider, db } from "../../firebaseConfig";
+import { useHistory } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 function SignIn() {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
+  const history = useHistory();
+
+  const loginHandler = () => {
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        
+        const email = result.user.email;
+        const q = query(collection(db, "admins"), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        let queryResult = []
+        querySnapshot.forEach((doc) => {
+          queryResult.push(doc.data())
+        });
+
+        let validLogin = false;
+        queryResult.forEach((each) => {
+          if (each.isAdmin) validLogin = true
+        })
+
+        if (!validLogin) {
+          alert("This account doesn't have admin access")
+          return signOut(auth)
+        }
+
+        history.push("/")
+      }).catch((error) => {
+        alert(error.message)
+      });
+  }
+
+  const logoutHandler = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
   return (
     <Flex position='relative' mb='40px'>
       <Flex
@@ -41,10 +85,10 @@ function SignIn() {
             background='transparent'
             p='48px'
             mt={{ md: "150px", lg: "80px" }}>
-            <Heading color={titleColor} fontSize='32px' mb='10px'>
+            <Heading color={titleColor} fontSize='32px' mb='50px' textAlign="center">
               Welcome Back
             </Heading>
-            <Text
+            {/* <Text
               mb='36px'
               ms='4px'
               color={textColor}
@@ -115,7 +159,10 @@ function SignIn() {
                   Sign Up
                 </Link>
               </Text>
-            </Flex>
+            </Flex> */}
+            <Button onClick={loginHandler}>
+              Sign In With Google
+            </Button>
           </Flex>
         </Flex>
         <Box

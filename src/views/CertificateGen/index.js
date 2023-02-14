@@ -42,13 +42,12 @@ console.log(activeInputElementPos)
   <div className="flex flex-row h-[100%]">
 
 <div className="w-[60%] h-[100%]  ">
-<FormControl width="70%">
+<FormControl width="70%" height="100%">
   <FormLabel>Event Name</FormLabel>
   <Input type='eventName' />
-  {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
   <div className="flex mt-5 mb-2">
-  <FormLabel htmlFor='email-alerts' mb='0'>
-    Particepent Name
+  <FormLabel mb='0'>
+    Participant Name
   </FormLabel>
   <span onClick={()=>setActiveInputElementPos({certid:false,certname:true})}><Switch id='certname' isChecked={activeInputElementPos.certname} colorScheme='green' /></span> 
   
@@ -70,6 +69,16 @@ console.log(activeInputElementPos)
   <input id="font" className=" border-[.001rem] px-2 py-1 my-2 border-gray-500 " type="text" value={certCord.cId.fontName} onChange={(e)=>setCertCord({...certCord,cId:{...certCord.cId,fontName:e.target.value}})} placeholder="Font" />
   <input id="fontsize" className="rounded border-[.001rem] px-2 py-1 border-gray-500 my-2" type="number" value={certCord.cId.fontSize} onChange={(e)=>setCertCord({...certCord,cId:{...certCord.cId,fontSize:e.target.value}})} placeholder="Fontsize"/>
   <input type="color" value={certCord.cId.fontColor} onChange={(e)=>setCertCord({...certCord,cId:{...certCord.cId,fontColor:e.target.value}})} />
+  </div>
+  <div className="flex flex-col mt-5 mb-2">
+
+  <FormLabel>Event Date</FormLabel>
+  <Input type='date' />
+  </div>
+  <div className="flex flex-col mt-5 mb-2 h-[300px]">
+
+  <FormLabel>Participants List</FormLabel>
+  <CsvUploader height="100%"  File={apiReqBody} setFile={setApiReqBody}/>
   </div>
 </FormControl>
   </div>

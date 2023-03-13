@@ -1,7 +1,6 @@
 import {
   Avatar,
   Badge,
-  Button,
   Flex,
   Td,
   Text,
@@ -9,6 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
+import PopUp from "./PopUp";
 
 function TablesTableRow(props) {
   const { logo, name, email, subdomain, domain, status, date } = props;
@@ -64,7 +64,7 @@ function TablesTableRow(props) {
         </Text>
       </Td>
       <Td>
-        <Button p="0px" bg="transparent" variant="no-hover">
+        {/* <Button p="0px" bg="transparent" variant="no-hover">
           <Text
             fontSize="md"
             color="gray.400"
@@ -73,7 +73,8 @@ function TablesTableRow(props) {
           >
             Edit
           </Text>
-        </Button>
+        </Button> */}
+        <PopUp />
       </Td>
     </Tr>
   );

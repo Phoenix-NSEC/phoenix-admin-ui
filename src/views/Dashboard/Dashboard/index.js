@@ -4,6 +4,8 @@ import {
   Grid,
   Image,
   SimpleGrid,
+  Input,
+  Button,
   useColorModeValue,
 } from "@chakra-ui/react";
 // assets
@@ -34,21 +36,35 @@ export default function Dashboard() {
 
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
-      <Flex gap="20px" mx="auto" justifyContent="center" wrap="wrap">
-        <MiniStatistics
-          title={"Verified Members"}
-          amount={"$53,000"}
-          percentage={55}
-          icon={<DocumentIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
-        />
-        <MiniStatistics
-          title={"Non-verified Members"}
-          amount={"2,300"}
-          percentage={5}
-          icon={<GlobeIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
-        />
+      <Flex gap="20px" mx="auto" justifyContent="center" alignItems="center" wrap="wrap" flexDirection="column">
+        <Flex gap="20px" mx="auto" justifyContent="center" wrap="wrap">
+          <MiniStatistics
+            title={"Verified Members"}
+            amount={"$53,000"}
+            percentage={55}
+            icon={<DocumentIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
+          />
+          <MiniStatistics
+            title={"Non-verified Members"}
+            amount={"2,300"}
+            percentage={5}
+            icon={<GlobeIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
+          />
+        </Flex>
+        <Flex gap="20px" flexDirection="row" mt="30px">
+          <Input placeholder='Enter name / ref id' 
+                 size='lg' 
+                 placeholderTextColor="teal" 
+                 htmlSize={50} 
+                 width='auto' 
+                 isInvalid 
+                 errorBorderColor='blue' />
+          <Button colorScheme='teal' size='md'>
+            Search
+          </Button>
+        </Flex>
       </Flex>
       <Tables />
-    </Flex>
+    </Flex >
   );
 }

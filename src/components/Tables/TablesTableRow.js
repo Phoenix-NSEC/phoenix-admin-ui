@@ -9,9 +9,12 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import PopUp from "./PopUp";
+import { BsTelephone } from "react-icons/bs";
+import { AiOutlineWhatsApp } from "react-icons/ai";
 
 function TablesTableRow(props) {
-  const { logo, name, email, subdomain, domain, status, date } = props;
+  const { logo, name, email, subdomain, domain, status, date, index, paymentSs, uniqueId, allData, setAllData } = props;
+
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
@@ -39,23 +42,29 @@ function TablesTableRow(props) {
 
       <Td>
         <Flex direction="column">
-          <Text fontSize="md" color={textColor} fontWeight="bold">
-            {domain}
+          <Text fontSize="lg" color={textColor} marginBottom={"1.5"}>
+            <Flex>
+              <BsTelephone className="mr-2" />
+              {domain}
+            </Flex>
           </Text>
-          <Text fontSize="sm" color="gray.400" fontWeight="normal">
-            {subdomain}
+          <Text fontSize="lg" fontWeight="normal">
+            <Flex>
+              <AiOutlineWhatsApp className="mr-2" />
+              {subdomain}
+            </Flex>
           </Text>
         </Flex>
       </Td>
       <Td>
         <Badge
-          bg={status === "Verified" ? "green.400" : bgStatus}
-          color={status === "Verified" ? "white" : colorStatus}
+          bg={status ? "green.400" : bgStatus}
+          color={status ? "white" : colorStatus}
           fontSize="16px"
           p="3px 10px"
           borderRadius="8px"
         >
-          {status}
+          {status ? "Verified" : "Not Verified"}
         </Badge>
       </Td>
       <Td>
@@ -64,17 +73,7 @@ function TablesTableRow(props) {
         </Text>
       </Td>
       <Td>
-        {/* <Button p="0px" bg="transparent" variant="no-hover">
-          <Text
-            fontSize="md"
-            color="gray.400"
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            Edit
-          </Text>
-        </Button> */}
-        <PopUp />
+        <PopUp index={index} paymentSs={paymentSs} uniqueId={uniqueId} name={name} allData={allData} setAllData={setAllData} />
       </Td>
     </Tr>
   );

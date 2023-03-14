@@ -15,7 +15,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import React from "react";
 
-const Authors = ({ title, captions, data }) => {
+const Authors = ({ title, captions, data, allData, setAllData }) => {
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
@@ -38,17 +38,22 @@ const Authors = ({ title, captions, data }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((row) => {
+            {data.map((row,index) => {
               return (
                 <TablesTableRow
                   key={`${row.email}-${row.name}`}
                   name={row.name}
-                  logo={row.logo}
+                  logo={row.profilePic}
                   email={row.email}
-                  subdomain={row.subdomain}
-                  domain={row.domain}
-                  status={row.status}
-                  date={row.date}
+                  subdomain={row.whatsapp}
+                  domain={row.contact}
+                  status={row.isVerified}
+                  date={row.department}
+                  index={index}
+                  paymentSs={row.transactionPic}
+                  uniqueId={row.id}
+                  allData={allData}
+                  setAllData={setAllData}
                 />
               );
             })}

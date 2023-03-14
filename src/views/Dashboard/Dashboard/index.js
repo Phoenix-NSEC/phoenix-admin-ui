@@ -34,6 +34,8 @@ import WorkWithTheRockets from "./components/WorkWithTheRockets";
 export default function Dashboard() {
   const iconBoxInside = useColorModeValue("white", "white");
 
+  
+
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
       <Flex gap="20px" mx="auto" justifyContent="center" alignItems="center" wrap="wrap" flexDirection="column">
@@ -51,7 +53,7 @@ export default function Dashboard() {
             icon={<GlobeIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
           />
         </Flex>
-        <Flex gap="20px" flexDirection="row" mt="30px">
+        {/* <Flex gap="20px" flexDirection="row" mt="30px">
           <Input placeholder='Enter name / ref id' 
                  size='lg' 
                  placeholderTextColor="teal" 
@@ -62,7 +64,7 @@ export default function Dashboard() {
           <Button colorScheme='teal' size='md'>
             Search
           </Button>
-        </Flex>
+        </Flex> */}
       </Flex>
       <Tables />
     </Flex >

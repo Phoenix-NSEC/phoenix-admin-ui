@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
-      <Flex gap="20px" mx="auto" justifyContent="center" alignItems="center" wrap="wrap" flexDirection="column">
+      {/* <Flex gap="20px" mx="auto" justifyContent="center" alignItems="center" wrap="wrap" flexDirection="column">
         <Flex gap="20px" mx="auto" justifyContent="center" wrap="wrap">
           <MiniStatistics
             title={"Verified Members"}
@@ -53,19 +53,7 @@ export default function Dashboard() {
             icon={<GlobeIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
           />
         </Flex>
-        {/* <Flex gap="20px" flexDirection="row" mt="30px">
-          <Input placeholder='Enter name / ref id' 
-                 size='lg' 
-                 placeholderTextColor="teal" 
-                 htmlSize={50} 
-                 width='auto' 
-                 isInvalid 
-                 errorBorderColor='blue' />
-          <Button colorScheme='teal' size='md'>
-            Search
-          </Button>
-        </Flex> */}
-      </Flex>
+      </Flex> */}
       <Tables />
     </Flex >
   );

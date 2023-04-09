@@ -14,19 +14,28 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { all } from "axios";
+import { verifyUser } from "utils/firebaseFxns/verification";
 
 function PopUp({ logo, paymentSs, uniqueId, index, name, allData, setAllData, setUserStatus, userStatus }) {
 
     const onVerify = () => {
         allData[index].isVerified = true;
-        const newData = [...allData];
-        let stat = {
-            verified: userStatus.verified += 1,
-            notVerified: userStatus.notVerified -= 1
+        console.log(uniqueId);
+        var isDone = await verifyUser(uniqueId);
+        if(!isDone){
+            console.log("error");
+            return;
+        }else{
+            console.log("done");
+            const newData = [...allData];
+            let stat = {
+                verified: userStatus.verified += 1,
+                notVerified: userStatus.notVerified -= 1
+            }
+            setUserStatus(stat);
+            setAllData(newData);
+            onClose();
         }
-        setUserStatus(stat);
-        setAllData(newData);
-        onClose();
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure();

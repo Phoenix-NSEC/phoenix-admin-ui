@@ -18,7 +18,7 @@ import { verifyUser } from "utils/firebaseFxns/verification";
 
 function PopUp({ logo, paymentSs, uniqueId, index, name, allData, setAllData, setUserStatus, userStatus }) {
 
-    const onVerify = () => {
+    const onVerify = async() => {
         allData[index].isVerified = true;
         console.log(uniqueId);
         var isDone = await verifyUser(uniqueId);

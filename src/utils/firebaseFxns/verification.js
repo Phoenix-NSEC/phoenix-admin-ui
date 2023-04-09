@@ -10,12 +10,8 @@ export async function verifyUser(uid) {
         const updates = {
             isVerified: true,
         }
-        var isDone = await setDoc(doc(db, 'registrations',uid), updates, { merge: true });
-        if (isDone) {
-            return true;
-        }else{
-            return false;
-        }
+        await setDoc(doc(db, 'registrations',uid), updates, { merge: true });
+        return true;
     } catch (error) {
         return false;
     }

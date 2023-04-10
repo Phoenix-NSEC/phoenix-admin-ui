@@ -14,17 +14,30 @@ import { BsTelephone } from "react-icons/bs";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 
 function TablesTableRow(props) {
-  const { logo, name, email, subdomain, domain, status, date, index, paymentSs, uniqueId, allData, setAllData, setUserStatus, userStatus } = props;
+  const {
+    logo,
+    name,
+    email,
+    subdomain,
+    domain,
+    status,
+    date,
+    index,
+    paymentSs,
+    uniqueId,
+    allData,
+    setAllData,
+    setUserStatus,
+    userStatus,
+  } = props;
 
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
 
   const handleDownload = () => {
-
-          // for downloading
-
-  }
+    // for downloading
+  };
 
   return (
     <Tr>
@@ -80,8 +93,22 @@ function TablesTableRow(props) {
         </Text>
       </Td>
       <Td>
-        {status ? <Button onClick={handleDownload}>Download</Button> : <PopUp index={index} logo={logo} paymentSs={paymentSs} uniqueId={uniqueId} name={name} allData={allData} setAllData={setAllData} userStatus={userStatus}
-          setUserStatus={setUserStatus} />}
+        {status ? (
+          <Button onClick={handleDownload}>Download</Button>
+        ) : (
+          <PopUp
+            email={email}
+            index={index}
+            logo={logo}
+            paymentSs={paymentSs}
+            uniqueId={uniqueId}
+            name={name}
+            allData={allData}
+            setAllData={setAllData}
+            userStatus={userStatus}
+            setUserStatus={setUserStatus}
+          />
+        )}
       </Td>
     </Tr>
   );

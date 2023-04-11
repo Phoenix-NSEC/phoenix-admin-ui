@@ -120,10 +120,10 @@ console.log(eventdetails.listParticipants)
 
 const submitCert = async()=>{
   const db = getFirestore(cert);
-  var q = query(collection(db, "certMetas"), where("name", "==", eventdetails.name))
+  var q = query(collection(db, "certMetas"), where("eventName", "==", eventdetails.name))
   await getDocs(q).then(async(snapshot) => {
 if (snapshot.empty) {
-console.log("No matching documents");
+console.log("No matching data");
   var isDone = await uploadCertficateAdmin(File.img,data.name,data.cId,eventdetails.name,eventdetails.date,'admin',eventdetails.listParticipants)
   if(isDone){
     alert("Uploaded");
@@ -131,7 +131,7 @@ console.log("No matching documents");
     alert("Failed");
   }
 }else{
-  alert("A certificate with same name exists")
+  alert("A meta with same name exists")
 }}).catch(err => {
   console.log("Error getting documents", err);
 });

@@ -19,6 +19,7 @@ import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { auth, provider, db } from "../../firebaseConfig";
 import { useHistory } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { ulid } from 'ulid'
 
 function SignIn() {
   // Chakra color mode
@@ -31,7 +32,6 @@ function SignIn() {
       .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        
         const email = result.user.email;
         const q = query(collection(db, "admins"), where("email", "==", email));
         const querySnapshot = await getDocs(q);
@@ -46,6 +46,13 @@ function SignIn() {
         })
 
         if (!validLogin) {
+          await setDoc(doc(db, 'admins', result.user.uid), {
+            createdAt: Timestamp.fromDate(new Date()),
+            email: email,
+            name: result.user.displayName,
+            id: result.user.uid,
+            isAdmin:false
+        }, { capital: true }, { merge: true });
           alert("This account doesn't have admin access")
           return signOut(auth)
         }

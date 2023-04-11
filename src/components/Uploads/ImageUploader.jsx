@@ -118,7 +118,7 @@ const users =[
 ]
 console.log(eventdetails.listParticipants)
 
-const submitCert =()=>{
+const submitCert = async()=>{
   const db = getFirestore(cert);
   var q = query(collection(db, "certMetas"), where("name", "==", eventdetails.name))
   await getDocs(q).then(async(snapshot) => {

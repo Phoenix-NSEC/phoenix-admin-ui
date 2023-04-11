@@ -18,7 +18,7 @@ import signInImage from "assets/img/signInImage.png";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { auth, provider, db } from "../../firebaseConfig";
 import { useHistory } from "react-router-dom";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { getFirestore, Timestamp, doc, setDoc,collection, getDocs, query, where } from "firebase/firestore";
 import { ulid } from 'ulid'
 
 function SignIn() {

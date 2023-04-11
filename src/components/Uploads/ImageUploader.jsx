@@ -1,6 +1,8 @@
 import { Flex, Container,Text, Button } from "@chakra-ui/react";
 import { useState, useEffect,useRef } from "react";
 import { uploadCertficateAdmin } from "utils/firebaseFxns/certificates";
+import { getFirestore, Timestamp, doc, setDoc,collection, query, where,getDocs } from "firebase/firestore";
+import { cert } from "firebaseConfig";
 
 
 function ImageUploader({File,setFile,activeInput,setActiveInput,setData,data,eventdetails}) {
@@ -117,7 +119,22 @@ const users =[
 console.log(eventdetails.listParticipants)
 
 const submitCert =()=>{
-  uploadCertficateAdmin(File.img,data.name,data.cId,eventdetails.name,eventdetails.date,'admin',eventdetails.listParticipants)
+  const db = getFirestore(cert);
+  var q = query(collection(db, "certMetas"), where("name", "==", eventdetails.name))
+  await getDocs(q).then(async(snapshot) => {
+if (snapshot.empty) {
+console.log("No matching documents");
+  var isDone = await uploadCertficateAdmin(File.img,data.name,data.cId,eventdetails.name,eventdetails.date,'admin',eventdetails.listParticipants)
+  if(isDone){
+    alert("Uploaded");
+  }else{
+    alert("Failed");
+  }
+}else{
+  alert("A certificate with same name exists")
+}}).catch(err => {
+  console.log("Error getting documents", err);
+});
 }
 
 
@@ -144,7 +161,7 @@ const submitCert =()=>{
               <canvas height="500px" width="800px" id="cert" className="bg-green-500 cursor-pointer"/>
             <Text> {formatString(File?.img?.name)}</Text>
             <Button w='50%' marginX='auto' colorScheme='red' onClick={()=>setFile({...File,img:''})}>Delete File</Button>
-            <Button w='50%' marginX='auto' colorScheme='blue' onClick={submitCert}>Save File</Button>
+            <Button w='50%' marginX='auto' colorScheme='blue' onClick={submitCert}>Upload Certificate</Button>
             </Flex>
         )}
       </Flex>

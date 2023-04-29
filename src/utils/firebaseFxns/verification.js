@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { ulid } from "ulid";
 import { db } from "firebaseConfig";
-import { addContactToList } from "../sendinblue/sendinblue";
+import { addContactToList, addContact } from "../sendinblue/sendinblue";
 
 const REGISTERED_USERS_ID = 5;
 
@@ -21,6 +21,7 @@ export async function verifyUser(email, uid) {
       isVerified: true,
     };
     await setDoc(doc(db, "registrations", uid), updates, { merge: true });
+    await addContact(email);
     await addContactToList([email], REGISTERED_USERS_ID);
     return true;
   } catch (error) {

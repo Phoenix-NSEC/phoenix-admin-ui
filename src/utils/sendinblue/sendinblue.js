@@ -5,7 +5,13 @@ const SB_API_KEY =
 
 // Create a contact in SendinBlue
 export const addContact = async (email, name, contact_number) => {
-  let [firstName, lastName] = name.split(" ");
+  let firstName, lastName;
+  try {
+    [firstName, lastName] = name.split(" ");
+  } catch {
+    firstName = "";
+    lastName = "";
+  }
   const contactValue = {
     email: email,
     attributes: {

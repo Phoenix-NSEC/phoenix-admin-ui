@@ -1,1 +1,5 @@
-{}
+{
+    "workbench.colorCustomizations": {
+        "editorInlayHint.foreground": "#eec2ff5c"
+    }
+}

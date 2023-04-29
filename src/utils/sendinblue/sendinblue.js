@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const SB_API_KEY =
-  "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";
+  "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";
 
 // Create a contact in SendinBlue
 export const addContact = async (email, name, contact_number) => {
@@ -17,7 +17,7 @@ export const addContact = async (email, name, contact_number) => {
     attributes: {
       FIRSTNAME: firstName,
       LASTNAME: lastName,
-      SMS: contact_number,
+      // SMS: contact_number,
     },
     updateEnabled: false,
   };
@@ -36,9 +36,9 @@ const callSendinBlue = async (endpoint, data) => {
     method: "POST",
     url: `https://api.sendinblue.com/v3/${endpoint}`,
     headers: {
+      "api-key": SB_API_KEY,
       "Content-Type": "application/json",
       accept: "application/json",
-      "api-key": SB_API_KEY,
     },
     data: data,
   });

@@ -25,6 +25,9 @@ import { certdb } from "firebaseConfig";
 const Download = ({ email }) => {
   const [userData, setUserData] = useState();
   const [idCard, setIdcard] = useState();
+  const [CertLoading, setCertloading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   let canvas;
   let ctx;
   let img = new Image();
@@ -32,7 +35,6 @@ const Download = ({ email }) => {
 
   const ref1 = useRef();
   const ref2 = useRef();
-  const [CertLoading, setCertloading] = useState(true);
 
   const fetchUserData = async (email) => {
     const q1 = query(
@@ -77,53 +79,56 @@ const Download = ({ email }) => {
   };
 
   useEffect(() => {
-    if (userData?.isVerified && ref1.current!==null) {
-      canvas = ref1.current;
-      console.log(canvas);
-      console.log(ref1);
-      ctx = canvas.getContext("2d");
-      console.log(ctx);
-    }
-
-    async function renderImage() {
-      if (userData && idCard) {
-        img.src = await getImageAsBase64(idCard?.url); // change url
-        avatar.src = await getImageAsBase64(userData.profilePic);
-        setCertloading(false);
+    setTimeout(() => {
+      if (userData?.isVerified && ref1.current) {
+        canvas = ref1.current;
+        console.log({canvas}, "hey")
+        console.log(canvas);
+        console.log(ref1);
+        ctx = canvas.getContext("2d");
+        console.log(ctx);
       }
-    }
-
-    renderImage();
-
-    img.onload = function () {
-        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-      
-      // Add text to the image
-      if (userData) {
-        ctx.font = "30px poppins";
-        ctx.fillStyle = idCard.name.fontColor;
-        ctx.fillText(userData.name, idCard.name.x, idCard.name.y);
-        ctx.font = "13.5px poppins";
-        ctx.fillStyle = userData.id.fontColor;
-        ctx.fillText(userData.id, idCard.idRef.x, idCard.idRef.y);
-        ctx.font = "15px poppins";
-        ctx.fillStyle = userData.id.fontColor;
-        ctx.fillText(userData.department, idCard.dept.x, idCard.dept.y);
-        ctx.font = "15px poppins";
-        ctx.fillStyle = userData.id.fontColor;
-        ctx.fillText( getSession(userData.graduation), idCard.session.x, idCard.session.y);
-    }
-};
-    avatar.onload = () => {
-      ctx?.drawImage(
-        avatar,
-        idCard.image.x,
-        idCard.image.y,
-        idCard.image.w,
-        idCard.image.h
-      );
-    };
-  });
+  
+      async function renderImage() {
+        if (userData && idCard) {
+          img.src = await getImageAsBase64(idCard?.url); // change url
+          avatar.src = await getImageAsBase64(userData.profilePic);
+          setCertloading(false);
+        }
+      }
+  
+      renderImage();
+  
+      img.onload = function () {
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Add text to the image
+        if (userData && ctx) {
+          ctx.font = "30px poppins";
+          ctx.fillStyle = idCard.name.fontColor;
+          ctx.fillText(userData.name, idCard.name.x, idCard.name.y);
+          ctx.font = "13.5px poppins";
+          ctx.fillStyle = userData.id.fontColor;
+          ctx.fillText(userData.id, idCard.idRef.x, idCard.idRef.y);
+          ctx.font = "15px poppins";
+          ctx.fillStyle = userData.id.fontColor;
+          ctx.fillText(userData.department, idCard.dept.x, idCard.dept.y);
+          ctx.font = "15px poppins";
+          ctx.fillStyle = userData.id.fontColor;
+          ctx.fillText( getSession(userData.graduation), idCard.session.x, idCard.session.y);
+        }
+      };
+      avatar.onload = () => {
+        ctx?.drawImage(
+          avatar,
+          idCard.image.x,
+          idCard.image.y,
+          idCard.image.w,
+          idCard.image.h
+        );
+      };
+    }, 200);
+  }, [isOpen]);
 
   function getSession(year) {
     let gradYear = +year;
@@ -133,31 +138,28 @@ const Download = ({ email }) => {
 
   useEffect(() => {
     fetchUserData(email);
-  },[]);
-//   console.log(canvas);
+  },[isOpen]);
+  console.log({userData});
 //   console.log(ctx);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Button onClick={onOpen}>Download</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} >
         <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
+        <ModalContent maxW="620px" maxH="500px">
+          <ModalBody maxH="370px">
             {userData && userData?.isVerified ? (
               <div
-                className={`xsm:scale-[.4] md:scale-[1] ${
-                  CertLoading && "bg-slate-200 animate-pulse"
-                } border-2 border-blue-300`}
+                className={`xsm:scale-[.4] md:scale-[1]`}
               >
                 <canvas
                   ref={ref1}
                   className="canvas"
                   height="500"
                   width="800"
+                  style={{transform: "scale(0.7)", transformOrigin: "left top"}}
                 />
               </div>
             ) : (

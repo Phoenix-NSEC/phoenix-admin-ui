@@ -1,4 +1,4 @@
-import { Flex, Progress, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Progress, Text, useColorModeValue, Box } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
 import React from "react";
 
@@ -10,7 +10,7 @@ const ChartStatistics = ({ title, amount, icon, percentage }) => {
   return (
     <Flex direction='column'>
       <Flex alignItems='center'>
-        <IconBox as='box' h={"30px"} w={"30px"} bg={iconTeal} me='6px'>
+        <IconBox as={Box} h={"30px"} w={"30px"} bg={iconTeal} me='6px'>
           {icon}
         </IconBox>
         <Text fontSize='sm' color='gray.400' fontWeight='semibold'>

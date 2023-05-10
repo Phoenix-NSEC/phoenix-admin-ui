@@ -2,6 +2,7 @@
 import {
   Flex,
   Stat,
+  Box,
   StatHelpText,
   StatLabel,
   StatNumber,
@@ -35,7 +36,7 @@ const MiniStatistics = ({ title, amount, percentage, icon }) => {
               </StatNumber>
             </Flex>
           </Stat>
-          <IconBox as='box' h={"45px"} w={"45px"} bg={iconTeal}>
+          <IconBox as={Box} h={"45px"} w={"45px"} bg={iconTeal}>
             {icon}
           </IconBox>
         </Flex>

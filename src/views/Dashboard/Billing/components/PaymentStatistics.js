@@ -1,5 +1,5 @@
 // Chakra imports
-import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Text, useColorModeValue, Box } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -15,7 +15,7 @@ const PaymentStatistics = ({ icon, title, description, amount }) => {
     <Card p='16px' display='flex' align='center' justify='center'>
       <CardBody>
         <Flex direction='column' align='center' w='100%' py='14px'>
-          <IconBox as='box' h={"60px"} w={"60px"} bg={iconTeal}>
+          <IconBox as={Box} h={"60px"} w={"60px"} bg={iconTeal}>
             {icon}
           </IconBox>
           <Flex

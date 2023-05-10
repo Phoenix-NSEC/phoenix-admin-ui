@@ -21,7 +21,6 @@ import axios from "axios";
 import { db, maindb, auth } from "firebaseConfig";
 import { certdb } from "firebaseConfig";
 
-
 const Download = ({ email }) => {
   const [userData, setUserData] = useState();
   const [idCard, setIdcard] = useState();
@@ -37,9 +36,7 @@ const Download = ({ email }) => {
   const ref2 = useRef();
 
   const fetchUserData = async (email) => {
-    const q1 = query(
-      collection(certdb, "idMeta")
-    );
+    const q1 = query(collection(certdb, "idMeta"));
 
     const q2 = query(
       collection(maindb, "registrations"),
@@ -56,7 +53,7 @@ const Download = ({ email }) => {
       setUserData(doc.data());
     });
   };
-//   console.log(idCard);
+  //   console.log(idCard);
 
   function getImageAsBase64(url) {
     return axios.get(url, { responseType: "blob" }).then((response) => {
@@ -72,9 +69,13 @@ const Download = ({ email }) => {
     });
   }
 
-  const Download = async () => {
+  const Download = () => {
+    // console.log(ref2);
+    // console.log(canvas);
     var link = ref2?.current;
-    link.href = canvas?.toDataURL();
+    // console.log(ref1.current?.toDataURL());
+    link.href = ref1.current?.toDataURL();
+    // console.log(link);
     link.download = `idcard.png`; //name of the downloaded certificate
   };
 
@@ -82,13 +83,13 @@ const Download = ({ email }) => {
     setTimeout(() => {
       if (userData?.isVerified && ref1.current) {
         canvas = ref1.current;
-        console.log({canvas}, "hey")
-        console.log(canvas);
-        console.log(ref1);
+        // console.log({ canvas }, "hey");
+        // console.log(canvas);
+        // console.log(ref1);
         ctx = canvas.getContext("2d");
-        console.log(ctx);
+        // console.log(ctx);
       }
-  
+
       async function renderImage() {
         if (userData && idCard) {
           img.src = await getImageAsBase64(idCard?.url); // change url
@@ -96,12 +97,12 @@ const Download = ({ email }) => {
           setCertloading(false);
         }
       }
-  
+
       renderImage();
-  
+
       img.onload = function () {
-          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
         // Add text to the image
         if (userData && ctx) {
           ctx.font = "30px poppins";
@@ -115,7 +116,11 @@ const Download = ({ email }) => {
           ctx.fillText(userData.department, idCard.dept.x, idCard.dept.y);
           ctx.font = "15px poppins";
           ctx.fillStyle = userData.id.fontColor;
-          ctx.fillText( getSession(userData.graduation), idCard.session.x, idCard.session.y);
+          ctx.fillText(
+            getSession(userData.graduation),
+            idCard.session.x,
+            idCard.session.y
+          );
         }
       };
       avatar.onload = () => {
@@ -138,28 +143,29 @@ const Download = ({ email }) => {
 
   useEffect(() => {
     fetchUserData(email);
-  },[isOpen]);
-  console.log({userData});
-//   console.log(ctx);
+  }, [isOpen]);
+  // console.log({ userData });
+    // console.log(canvas);
 
   return (
     <>
       <Button onClick={onOpen}>Download</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent maxW="620px" maxH="500px">
           <ModalBody maxH="370px">
             {userData && userData?.isVerified ? (
-              <div
-                className={`xsm:scale-[.4] md:scale-[1]`}
-              >
+              <div className={`xsm:scale-[.4] md:scale-[1]`}>
                 <canvas
                   ref={ref1}
                   className="canvas"
                   height="500"
                   width="800"
-                  style={{transform: "scale(0.7)", transformOrigin: "left top"}}
+                  style={{
+                    transform: "scale(0.7)",
+                    transformOrigin: "left top",
+                  }}
                 />
               </div>
             ) : (
@@ -174,11 +180,11 @@ const Download = ({ email }) => {
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            {userData?.isVerified && <a ref={ref2} id="save" onClick={Download}>
-          <button className="inline-block self-center bg-blue-600 text-white font-bold rounded-lg px-6 py-3 shadow-md uppercase  text-sm hover:bg-blue-600 md:mt-5">
-            Download
-          </button>
-        </a>}
+            {userData?.isVerified && (
+              <a ref={ref2} id="save" onClick={Download}>
+                <Button colorScheme="teal">Download</Button>
+              </a>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>

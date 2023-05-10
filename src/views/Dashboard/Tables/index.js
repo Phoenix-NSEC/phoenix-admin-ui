@@ -38,7 +38,7 @@ function Tables() {
           stat.notVerified += 1;
       })
       setUserStatus(stat);
-      console.log(filteredData);
+      // console.log(filteredData);
     } catch (error) {
       console.log(error.message);
     }

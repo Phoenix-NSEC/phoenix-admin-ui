@@ -12,6 +12,7 @@ import React from "react";
 import PopUp from "./PopUp";
 import { BsTelephone } from "react-icons/bs";
 import { AiOutlineWhatsApp } from "react-icons/ai";
+import Download from "./Download";
 
 function TablesTableRow(props) {
   const {
@@ -94,7 +95,9 @@ function TablesTableRow(props) {
       </Td>
       <Td>
         {status ? (
-          <Button onClick={handleDownload}>Download</Button>
+          <Download
+          email={email}
+        />
         ) : (
           <PopUp
             email={email}

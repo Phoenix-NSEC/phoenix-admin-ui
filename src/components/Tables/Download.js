@@ -12,16 +12,26 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
-import { verifyUser } from "utils/firebaseFxns/verification";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 // import { auth, db, maindb } from "../firebaseConf";
 import axios from "axios";
 import { db, maindb, auth } from "firebaseConfig";
 import { certdb } from "firebaseConfig";
+import { unverifyUser } from "utils/firebaseFxns/verification";
 
-const Download = ({ email }) => {
+const Download = ({ email,
+  logo,
+  paymentSs,
+  uniqueId,
+  index,
+  name,
+  allData,
+  setAllData,
+  setUserStatus,
+  userStatus, }) => {
   const [userData, setUserData] = useState();
   const [idCard, setIdcard] = useState();
   const [CertLoading, setCertloading] = useState(true);
@@ -68,10 +78,10 @@ const Download = ({ email }) => {
     });
   }
   function formatedName(fullName) {
-    return fullName.replace(/ /g, '_');
+    return fullName.replace(/ /g, "_");
   }
 
-  const IdDownload = async (canvas,name) => {
+  const IdDownload = async (canvas, name) => {
     var link = ref2?.current;
     link.href = canvas?.toDataURL();
     link.download = `${formatedName(name)}_Phoenix_Membershipcard.png`; //name of the downloaded idCard
@@ -81,7 +91,7 @@ const Download = ({ email }) => {
     setTimeout(() => {
       if (userData?.isVerified && ref1.current) {
         canvas = ref1.current;
-       
+
         ctx = canvas.getContext("2d");
       }
 
@@ -138,7 +148,27 @@ const Download = ({ email }) => {
 
   useEffect(() => {
     fetchUserData(email);
-  },[isOpen]);
+  }, [isOpen]);
+
+  const onVerify = async () => {
+    allData[index].isVerified = false;
+    console.log(uniqueId);
+    var isDone = await unverifyUser(email, uniqueId);
+    if (!isDone) {
+      console.log("error");
+      return;
+    } else {
+      console.log("done");
+      const newData = [...allData];
+      let stat = {
+        verified: (userStatus.verified -= 1),
+        notVerified: (userStatus.notVerified += 1),
+      };
+      setUserStatus(stat);
+      setAllData(newData);
+      onClose();
+    }
+  };
 
   return (
     <>
@@ -169,15 +199,30 @@ const Download = ({ email }) => {
               </div>
             )}
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={onClose}>
-              Close
+          <ModalFooter
+            display={"flex"}
+            flexDir={"row-reverse"}
+            justifyContent={"space-between"}
+          >
+            <Box>
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              {userData?.isVerified && (
+                <a
+                  ref={ref2}
+                  id="save"
+                  onClick={() => IdDownload(ref1.current, userData.name)}
+                >
+                  <Button colorScheme="blue" mr={3}>
+                    Download
+                  </Button>
+                </a>
+              )}
+            </Box>
+            <Button variant="ghost" color="gray.500" onClick={onVerify}>
+              Invalidate
             </Button>
-            {userData?.isVerified && <a ref={ref2} id="save" onClick={()=>IdDownload(ref1.current,userData.name)}>
-          <Button colorScheme="blue" mr={3}>
-            Download
-          </Button>
-        </a>}
           </ModalFooter>
         </ModalContent>
       </Modal>

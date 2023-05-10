@@ -53,7 +53,6 @@ const Download = ({ email }) => {
       setUserData(doc.data());
     });
   };
-  //   console.log(idCard);
 
   function getImageAsBase64(url) {
     return axios.get(url, { responseType: "blob" }).then((response) => {
@@ -68,26 +67,22 @@ const Download = ({ email }) => {
       });
     });
   }
+  function formatedName(fullName) {
+    return fullName.replace(/ /g, '_');
+  }
 
-  const Download = () => {
-    // console.log(ref2);
-    // console.log(canvas);
+  const IdDownload = async (canvas,name) => {
     var link = ref2?.current;
-    // console.log(ref1.current?.toDataURL());
-    link.href = ref1.current?.toDataURL();
-    // console.log(link);
-    link.download = `idcard.png`; //name of the downloaded certificate
+    link.href = canvas?.toDataURL();
+    link.download = `${formatedName(name)}_Phoenix_Membershipcard.png`; //name of the downloaded idCard
   };
 
   useEffect(() => {
     setTimeout(() => {
       if (userData?.isVerified && ref1.current) {
         canvas = ref1.current;
-        // console.log({ canvas }, "hey");
-        // console.log(canvas);
-        // console.log(ref1);
+       
         ctx = canvas.getContext("2d");
-        // console.log(ctx);
       }
 
       async function renderImage() {
@@ -143,9 +138,7 @@ const Download = ({ email }) => {
 
   useEffect(() => {
     fetchUserData(email);
-  }, [isOpen]);
-  // console.log({ userData });
-    // console.log(canvas);
+  },[isOpen]);
 
   return (
     <>
@@ -177,14 +170,14 @@ const Download = ({ email }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
               Close
             </Button>
-            {userData?.isVerified && (
-              <a ref={ref2} id="save" onClick={Download}>
-                <Button colorScheme="teal">Download</Button>
-              </a>
-            )}
+            {userData?.isVerified && <a ref={ref2} id="save" onClick={()=>IdDownload(ref1.current,userData.name)}>
+          <Button colorScheme="blue" mr={3}>
+            Download
+          </Button>
+        </a>}
           </ModalFooter>
         </ModalContent>
       </Modal>

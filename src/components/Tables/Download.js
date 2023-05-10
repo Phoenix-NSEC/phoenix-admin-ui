@@ -56,7 +56,6 @@ const Download = ({ email }) => {
       setUserData(doc.data());
     });
   };
-//   console.log(idCard);
 
   function getImageAsBase64(url) {
     return axios.get(url, { responseType: "blob" }).then((response) => {
@@ -71,22 +70,22 @@ const Download = ({ email }) => {
       });
     });
   }
+  function formatedName(fullName) {
+    return fullName.replace(/ /g, '_');
+  }
 
-  const Download = async () => {
+  const IdDownload = async (canvas,name) => {
     var link = ref2?.current;
     link.href = canvas?.toDataURL();
-    link.download = `idcard.png`; //name of the downloaded certificate
+    link.download = `${formatedName(name)}_Phoenix_Membershipcard.png`; //name of the downloaded certificate
   };
 
   useEffect(() => {
     setTimeout(() => {
       if (userData?.isVerified && ref1.current) {
         canvas = ref1.current;
-        console.log({canvas}, "hey")
-        console.log(canvas);
-        console.log(ref1);
+       
         ctx = canvas.getContext("2d");
-        console.log(ctx);
       }
   
       async function renderImage() {
@@ -139,8 +138,6 @@ const Download = ({ email }) => {
   useEffect(() => {
     fetchUserData(email);
   },[isOpen]);
-  console.log({userData});
-//   console.log(ctx);
 
   return (
     <>
@@ -171,13 +168,13 @@ const Download = ({ email }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
               Close
             </Button>
-            {userData?.isVerified && <a ref={ref2} id="save" onClick={Download}>
-          <button className="inline-block self-center bg-blue-600 text-white font-bold rounded-lg px-6 py-3 shadow-md uppercase  text-sm hover:bg-blue-600 md:mt-5">
+            {userData?.isVerified && <a ref={ref2} id="save" onClick={()=>IdDownload(ref1.current,userData.name)}>
+          <Button colorScheme="blue" mr={3}>
             Download
-          </button>
+          </Button>
         </a>}
           </ModalFooter>
         </ModalContent>

@@ -77,8 +77,8 @@ const Download = ({ email }) => {
   };
 
   useEffect(() => {
-    if (userData?.isVerified && ref1.current) {
-      canvas = ref1?.current;
+    if (userData?.isVerified && ref1.current!==null) {
+      canvas = ref1.current;
       console.log(canvas);
       console.log(ref1);
       ctx = canvas.getContext("2d");

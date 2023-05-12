@@ -11,12 +11,7 @@ import {
   useDisclosure,
   Box,
 } from "@chakra-ui/react";
-<<<<<<< HEAD
-
 import qrcode from 'qrcode';
-=======
-import { onAuthStateChanged } from "firebase/auth";
->>>>>>> 01b1a3eff9cbaefbe3069798023193aabc1c0e90
 import { collection, getDocs, query, where } from "firebase/firestore";
 // import { auth, db, maindb } from "../firebaseConf";
 import axios from "axios";
@@ -38,8 +33,6 @@ const Download = ({ email,
   const [idCard, setIdcard] = useState();
   const [CertLoading, setCertloading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-
   let canvas;
   let ctx;
   const img = new Image();
@@ -139,7 +132,6 @@ const Download = ({ email,
           ctx.fillText(userData.department, idCard.dept.x, idCard.dept.y);
           ctx.font = "15px poppins";
           ctx.fillStyle = userData.id.fontColor;
-<<<<<<< HEAD
           ctx.fillText( getSession(userData.graduation), idCard.session.x, idCard.session.y);
           avatar.onload = () => {
             ctx?.drawImage(
@@ -160,13 +152,6 @@ const Download = ({ email,
               idCard.qr.h
             );
           };
-=======
-          ctx.fillText(
-            getSession(userData.graduation),
-            idCard.session.x,
-            idCard.session.y
-          );
->>>>>>> 01b1a3eff9cbaefbe3069798023193aabc1c0e90
         }
       };
       

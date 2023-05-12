@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
-  Avatar,
-  Text,
-  Flex,
   Button,
   Modal,
   ModalOverlay,
@@ -13,8 +10,8 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { verifyUser } from "utils/firebaseFxns/verification";
-import { onAuthStateChanged } from "firebase/auth";
+
+import qrcode from 'qrcode';
 import { collection, getDocs, query, where } from "firebase/firestore";
 // import { auth, db, maindb } from "../firebaseConf";
 import axios from "axios";
@@ -28,10 +25,13 @@ const Download = ({ email }) => {
   const [CertLoading, setCertloading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+
   let canvas;
   let ctx;
-  let img = new Image();
-  let avatar = new Image();
+  const img = new Image();
+  const avatar = new Image();
+  const qrCodeImage = new Image();
+
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -92,6 +92,19 @@ const Download = ({ email }) => {
         if (userData && idCard) {
           img.src = await getImageAsBase64(idCard?.url); // change url
           avatar.src = await getImageAsBase64(userData.profilePic);
+          const qrCodeText = userData.id;
+          const qrCodeOptions = {
+            errorCorrectionLevel: 'H',
+            type: 'image/png',
+            quality: 0.92,
+            margin: 1,
+            color: {
+              dark: '#000000FF',
+              light: '#FFFFFFFF'
+            }
+          };
+          const qrCodeImageSrc = await qrcode.toDataURL(qrCodeText, qrCodeOptions);
+          qrCodeImage.src = qrCodeImageSrc;
           setCertloading(false);
         }
       }
@@ -115,17 +128,30 @@ const Download = ({ email }) => {
           ctx.font = "15px poppins";
           ctx.fillStyle = userData.id.fontColor;
           ctx.fillText( getSession(userData.graduation), idCard.session.x, idCard.session.y);
+          avatar.onload = () => {
+            ctx?.drawImage(
+              avatar,
+              idCard.image.x,
+              idCard.image.y,
+              idCard.image.w,
+              idCard.image.h
+            );
+          };
+          console.log(idCard)
+          qrCodeImage.onload = () => {
+            ctx?.drawImage(
+              qrCodeImage,
+              idCard.qr.x,
+              idCard.qr.y,
+              idCard.qr.w,
+              idCard.qr.h
+            );
+          };
         }
       };
-      avatar.onload = () => {
-        ctx?.drawImage(
-          avatar,
-          idCard.image.x,
-          idCard.image.y,
-          idCard.image.w,
-          idCard.image.h
-        );
-      };
+      
+
+
     }, 200);
   }, [isOpen]);
 

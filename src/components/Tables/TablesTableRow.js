@@ -36,10 +36,6 @@ function TablesTableRow(props) {
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
 
-  const handleDownload = () => {
-    // for downloading
-  };
-
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">
@@ -96,7 +92,16 @@ function TablesTableRow(props) {
       <Td>
         {status ? (
           <Download
-          email={email}
+            email={email}
+            index={index}
+            logo={logo}
+            paymentSs={paymentSs}
+            uniqueId={uniqueId}
+            name={name}
+            allData={allData}
+            setAllData={setAllData}
+            userStatus={userStatus}
+            setUserStatus={setUserStatus}
         />
         ) : (
           <PopUp

@@ -9,17 +9,31 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
+<<<<<<< HEAD
 
 import qrcode from 'qrcode';
+=======
+import { onAuthStateChanged } from "firebase/auth";
+>>>>>>> 01b1a3eff9cbaefbe3069798023193aabc1c0e90
 import { collection, getDocs, query, where } from "firebase/firestore";
 // import { auth, db, maindb } from "../firebaseConf";
 import axios from "axios";
 import { db, maindb, auth } from "firebaseConfig";
 import { certdb } from "firebaseConfig";
+import { unverifyUser } from "utils/firebaseFxns/verification";
 
-
-const Download = ({ email }) => {
+const Download = ({ email,
+  logo,
+  paymentSs,
+  uniqueId,
+  index,
+  name,
+  allData,
+  setAllData,
+  setUserStatus,
+  userStatus, }) => {
   const [userData, setUserData] = useState();
   const [idCard, setIdcard] = useState();
   const [CertLoading, setCertloading] = useState(true);
@@ -37,9 +51,7 @@ const Download = ({ email }) => {
   const ref2 = useRef();
 
   const fetchUserData = async (email) => {
-    const q1 = query(
-      collection(certdb, "idMeta")
-    );
+    const q1 = query(collection(certdb, "idMeta"));
 
     const q2 = query(
       collection(maindb, "registrations"),
@@ -71,23 +83,23 @@ const Download = ({ email }) => {
     });
   }
   function formatedName(fullName) {
-    return fullName.replace(/ /g, '_');
+    return fullName.replace(/ /g, "_");
   }
 
-  const IdDownload = async (canvas,name) => {
+  const IdDownload = async (canvas, name) => {
     var link = ref2?.current;
     link.href = canvas?.toDataURL();
-    link.download = `${formatedName(name)}_Phoenix_Membershipcard.png`; //name of the downloaded certificate
+    link.download = `${formatedName(name)}_Phoenix_Membershipcard.png`; //name of the downloaded idCard
   };
 
   useEffect(() => {
     setTimeout(() => {
       if (userData?.isVerified && ref1.current) {
         canvas = ref1.current;
-       
+
         ctx = canvas.getContext("2d");
       }
-  
+
       async function renderImage() {
         if (userData && idCard) {
           img.src = await getImageAsBase64(idCard?.url); // change url
@@ -108,12 +120,12 @@ const Download = ({ email }) => {
           setCertloading(false);
         }
       }
-  
+
       renderImage();
-  
+
       img.onload = function () {
-          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
         // Add text to the image
         if (userData && ctx) {
           ctx.font = "30px poppins";
@@ -127,6 +139,7 @@ const Download = ({ email }) => {
           ctx.fillText(userData.department, idCard.dept.x, idCard.dept.y);
           ctx.font = "15px poppins";
           ctx.fillStyle = userData.id.fontColor;
+<<<<<<< HEAD
           ctx.fillText( getSession(userData.graduation), idCard.session.x, idCard.session.y);
           avatar.onload = () => {
             ctx?.drawImage(
@@ -147,6 +160,13 @@ const Download = ({ email }) => {
               idCard.qr.h
             );
           };
+=======
+          ctx.fillText(
+            getSession(userData.graduation),
+            idCard.session.x,
+            idCard.session.y
+          );
+>>>>>>> 01b1a3eff9cbaefbe3069798023193aabc1c0e90
         }
       };
       
@@ -163,26 +183,47 @@ const Download = ({ email }) => {
 
   useEffect(() => {
     fetchUserData(email);
-  },[isOpen]);
+  }, [isOpen]);
+
+  const onVerify = async () => {
+    allData[index].isVerified = false;
+    console.log(uniqueId);
+    var isDone = await unverifyUser(email, uniqueId);
+    if (!isDone) {
+      console.log("error");
+      return;
+    } else {
+      console.log("done");
+      const newData = [...allData];
+      let stat = {
+        verified: (userStatus.verified -= 1),
+        notVerified: (userStatus.notVerified += 1),
+      };
+      setUserStatus(stat);
+      setAllData(newData);
+      onClose();
+    }
+  };
 
   return (
     <>
       <Button onClick={onOpen}>Download</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent maxW="620px" maxH="500px">
           <ModalBody maxH="370px">
             {userData && userData?.isVerified ? (
-              <div
-                className={`xsm:scale-[.4] md:scale-[1]`}
-              >
+              <div className={`xsm:scale-[.4] md:scale-[1]`}>
                 <canvas
                   ref={ref1}
                   className="canvas"
                   height="500"
                   width="800"
-                  style={{transform: "scale(0.7)", transformOrigin: "left top"}}
+                  style={{
+                    transform: "scale(0.7)",
+                    transformOrigin: "left top",
+                  }}
                 />
               </div>
             ) : (
@@ -193,15 +234,30 @@ const Download = ({ email }) => {
               </div>
             )}
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={onClose}>
-              Close
+          <ModalFooter
+            display={"flex"}
+            flexDir={"row-reverse"}
+            justifyContent={"space-between"}
+          >
+            <Box>
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              {userData?.isVerified && (
+                <a
+                  ref={ref2}
+                  id="save"
+                  onClick={() => IdDownload(ref1.current, userData.name)}
+                >
+                  <Button colorScheme="blue" mr={3}>
+                    Download
+                  </Button>
+                </a>
+              )}
+            </Box>
+            <Button variant="ghost" color="gray.500" onClick={onVerify}>
+              Invalidate
             </Button>
-            {userData?.isVerified && <a ref={ref2} id="save" onClick={()=>IdDownload(ref1.current,userData.name)}>
-          <Button colorScheme="blue" mr={3}>
-            Download
-          </Button>
-        </a>}
           </ModalFooter>
         </ModalContent>
       </Modal>

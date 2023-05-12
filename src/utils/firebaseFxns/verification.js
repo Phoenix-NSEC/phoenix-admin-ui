@@ -28,3 +28,17 @@ export async function verifyUser(email, uid) {
     return false;
   }
 }
+
+export async function unverifyUser(email, uid) {
+  try {
+    const updates = {
+      isVerified: false,
+    };
+    await setDoc(doc(db, "registrations", uid), updates, { merge: true });
+    await addContact(email);
+    await addContactToList([email], REGISTERED_USERS_ID);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}

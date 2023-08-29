@@ -102,7 +102,7 @@ function TablesTableRow(props) {
             setAllData={setAllData}
             userStatus={userStatus}
             setUserStatus={setUserStatus}
-        />
+          />
         ) : (
           <PopUp
             email={email}

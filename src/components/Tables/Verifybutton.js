@@ -17,7 +17,7 @@ const VerifyButton = ({
   const handleClick = async () => {
       allData[index].isVerified = true;
       console.log(uniqueId);
-      var isDone = await verifyUser(email, uniqueId);
+      var isDone = await verifyUser(email, name, uniqueId);
       if (!isDone) {
         console.log("error");
         return;

@@ -8,6 +8,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc
 } from "firebase/firestore";
 import { ulid } from "ulid";
 import { db } from "firebaseConfig";

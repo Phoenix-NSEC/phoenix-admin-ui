@@ -25,8 +25,6 @@ const Authors = ({
   setUserStatus,
   userStatus,
 }) => {
-  
-
   const [studentData, setStudentData] = useState(data);
   const [filterStudentData, setFilterStudentData] = useState(data);
   useEffect(() => {
@@ -41,14 +39,14 @@ const Authors = ({
       const graduationYear = e.target.value;
       const filterData = studentData?.filter((user) => {
         return (
-          graduationYear.slice(graduationYear.length - 2) ==
-          user.graduation.slice(user.graduation.length - 2)
+          graduationYear?.slice(graduationYear.length - 2) ==
+          user?.graduation?.slice(user.graduation.length - 2)
         );
       });
       setFilterStudentData(filterData);
     }
   };
-  
+
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Card overflowX={{ sm: "scroll", xl: "hidden" }}>

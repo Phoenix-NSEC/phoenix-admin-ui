@@ -39,7 +39,7 @@ export async function verifyUser(email, name, uid) {
   }
 }
 
-export async function unverifyUser(email, uid) {
+export async function unverifyUser(uid) {
   try {
     const updates = {
       isVerified: false,
@@ -47,7 +47,6 @@ export async function unverifyUser(email, uid) {
     await setDoc(doc(db, "registrations", uid), updates, { merge: true });
     // await addContact(email);
     // await addContactToList([email], REGISTERED_USERS_ID);
-    await sendEmail(email, firstName, lastName);
     return true;
   } catch (error) {
     console.error(error);

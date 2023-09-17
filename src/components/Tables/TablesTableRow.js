@@ -8,7 +8,7 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import PopUp from "./PopUp";
 import { BsTelephone } from "react-icons/bs";
 import { AiOutlineWhatsApp } from "react-icons/ai";
@@ -32,7 +32,7 @@ function TablesTableRow(props) {
     setUserStatus,
     userStatus,
   } = props;
-
+  
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
@@ -82,7 +82,8 @@ function TablesTableRow(props) {
           p="3px 10px"
           borderRadius="8px"
         >
-          <VerifyButton email={email}
+          <VerifyButton
+            email={email}
             index={index}
             logo={logo}
             paymentSs={paymentSs}
@@ -92,7 +93,8 @@ function TablesTableRow(props) {
             allData={allData}
             setAllData={setAllData}
             userStatus={userStatus}
-            setUserStatus={setUserStatus}/>
+            setUserStatus={setUserStatus}
+          />
         </Badge>
       </Td>
       <Td>
@@ -113,7 +115,7 @@ function TablesTableRow(props) {
             setAllData={setAllData}
             userStatus={userStatus}
             setUserStatus={setUserStatus}
-        />
+          />
         ) : (
           <PopUp
             email={email}

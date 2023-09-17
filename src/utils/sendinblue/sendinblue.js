@@ -13,7 +13,7 @@ export const addContact = async (email, name, contact_number) => {
     lastName = "";
   }
   const contactValue = {
-    email: email,
+    email: emails,
     attributes: {
       FIRSTNAME: firstName,
       LASTNAME: lastName,

@@ -1,4 +1,5 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import smptjs from "smtpjs"; // Correct the import statement
 import {
   getFirestore,
   Timestamp,
@@ -11,34 +12,44 @@ import {
 } from "firebase/firestore";
 import { ulid } from "ulid";
 import { db } from "firebaseConfig";
-import { addContactToList, addContact } from "../sendinblue/sendinblue";
-
+import { sendEmail } from "components/smptjs/smptjs";
+// import { addContactToList, addContact } from "../sendinblue/sendinblue";
 const REGISTERED_USERS_ID = 5;
 
-export async function verifyUser(email, uid) {
+export async function verifyUser(email, name, uid) {
   try {
     const updates = {
       isVerified: true,
     };
     await setDoc(doc(db, "registrations", uid), updates, { merge: true });
-    await addContact(email);
-    await addContactToList([email], REGISTERED_USERS_ID);
+    // await addContact(email);
+    // await addContactToList([email], REGISTERED_USERS_ID);
+    let firstName, lastName;
+    try {
+      [firstName, lastName] = name.split(" ");
+    } catch {
+      firstName = "";
+      lastName = "";
+    }
+    await sendEmail(email, firstName, lastName);
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }
 
-export async function unverifyUser(email, uid) {
+export async function unverifyUser(uid) {
   try {
     const updates = {
       isVerified: false,
     };
     await setDoc(doc(db, "registrations", uid), updates, { merge: true });
-    await addContact(email);
-    await addContactToList([email], REGISTERED_USERS_ID);
+    // await addContact(email);
+    // await addContactToList([email], REGISTERED_USERS_ID);
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }

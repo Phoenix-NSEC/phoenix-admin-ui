@@ -4,7 +4,7 @@ async function sendEmail(email, firstName, lastName) {
     const config = {
         SecureToken: "91d7d8de-229d-4377-b7c6-a10419677471",
         Server: "smtp.elasticemail.com",
-        To: "gadarsh747@gmail.com",
+        To: email,
         From: "mail.phoenixnsec@gmail.com",
         Subject: "Subject",
         Body: `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">

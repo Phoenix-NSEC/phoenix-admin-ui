@@ -43,7 +43,7 @@ const Authors = ({
             All
           </Button>
           <Button m="0px 10px" bg={"teal.300"} onClick={() => handleFilter("verify")}>
-            Verify
+            Verified
           </Button>
           <Button m="0px 10px" bg={"red.300"} onClick={() => handleFilter("notverify")}>
             Not Verified
